@@ -29,6 +29,11 @@ int* ajuster_degre(int *poly, int *deg) {
     // allouer un tableau de la bonne taille
     int *nouveau_poly = malloc((nouveau_degre + 1) * sizeof(int));
 
+    // copier les coefficients du polynome ajuste
+    for (int i = 0; i < nouveau_degre; ++i) {
+        nouveau_poly[i] = poly[i];
+    }
+
     // mise à jour degre du polynome
     *deg = nouveau_degre;
 
@@ -49,12 +54,12 @@ int main() {
 
     // Appel de la fonction pour ajuster le degre du polynome
     int new_deg = 4;
-    int t[] = {3, -1, 0, 2};
+    int t[] = {3, -1, 0, 0};
     int *nouveau_t = ajuster_degre(t, &new_deg);
 
     printf("Nouveau degre : %d\n", new_deg);
     printf("Nouveau tableau :\n");
-    for (int i = 0; i <= new_deg; ++i) {
+    for (int i = 0; i < new_deg; ++i) {
         printf("a%d = %d\n", i, nouveau_t[i]);
     }
 

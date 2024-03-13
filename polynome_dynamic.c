@@ -64,27 +64,27 @@ void afficher_polynome(int *poly, int deg) {
 }
 
 int main() {
-    int deg;
-    int *polynome = saisir_polynome(&deg);
-
-    // Affichage du polynome pour verification
-    printf("Polynome saisi :\n");
-    afficher_polynome(polynome, deg);
-
-    free(polynome);
-
     // Appel de la fonction pour ajuster le degre du polynome
     int new_deg = 4;
     int t[] = {3, -1, 0, 2};
     int *nouveau_t = ajuster_degre(t, &new_deg);
-
-    //sleep(2);
-	//system("cls");
 
     printf("Nouveau degre : %d\n", new_deg);
     printf("Nouveau tableau :\n");
     afficher_polynome(nouveau_t, new_deg);
 
     free(nouveau_t);
+
+    int deg;
+    int *polynome = saisir_polynome(&deg);
+
+    sleep(3);
+	system("cls");
+
+    // Affichage du polynome pour verification
+    printf("Polynome saisi :\n");
+    afficher_polynome(polynome, deg);
+
+    free(polynome);
     return 0;
 }

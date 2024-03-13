@@ -67,7 +67,6 @@ int* soustraction_polynome(int *poly1, int deg1, int *poly2, int deg2, int *deg_
     // trouver le degre du result
     *deg_result = (deg1 > deg2) ? deg1 : deg2;
 
-    // allouer de l'espace pour le result
     int *result = malloc((*deg_result + 1) * sizeof(int));
 
     // soustraire les coefficients correspondants
@@ -80,13 +79,32 @@ int* soustraction_polynome(int *poly1, int deg1, int *poly2, int deg2, int *deg_
     return result;
 }
 
+int* multiplication_polynome(int *poly1, int deg1, int *poly2, int deg2, int *deg_result) {
+    // calcul du degre du result
+    *deg_result = deg1 + deg2;
+
+    int *result = calloc((*deg_result + 1), sizeof(int));
+
+    // effectuer la multiplication terme à terme
+    for (int i = 0; i <= deg1; ++i) {
+        for (int j = 0; j <= deg2; ++j) {
+            result[i + j] += poly1[i] * poly2[j];
+        }
+    }
+
+    return result;
+}
+
 int main() {
     int deg1;
     int *polynome1 = saisir_polynome(&deg1);
     int deg2;
     int *polynome2 = saisir_polynome(&deg2);
     int deg_result;
+    int deg_result2;
     int *result = soustraction_polynome(polynome1, deg1, polynome2, deg2, &deg_result);
+    int *result2 = multiplication_polynome(polynome1, deg1, polynome2, deg2, &deg_result2);
+
 
     // Affichage du polynome pour verification
     printf("Polynome 1 saisi :\n");
@@ -110,6 +128,11 @@ int main() {
     afficher_polynome(result, deg_result);
 
     free(result);
+
+    printf("\n\nResultat de la multiplication :\n");
+    afficher_polynome(result2, deg_result2);
+
+    free(result2);
 
     return 0;
 }

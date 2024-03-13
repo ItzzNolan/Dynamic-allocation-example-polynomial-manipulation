@@ -63,28 +63,53 @@ void afficher_polynome(int *poly, int deg) {
     printf("\n");
 }
 
+int* soustraction_polynome(int *poly1, int deg1, int *poly2, int deg2, int *deg_result) {
+    // trouver le degre du result
+    *deg_result = (deg1 > deg2) ? deg1 : deg2;
+
+    // allouer de l'espace pour le result
+    int *result = malloc((*deg_result + 1) * sizeof(int));
+
+    // soustraire les coefficients correspondants
+    for (int i = 0; i <= *deg_result; ++i) {
+        int coef1 = (i <= deg1) ? poly1[i] : 0;
+        int coef2 = (i <= deg2) ? poly2[i] : 0;
+        result[i] = coef1 - coef2;
+    }
+
+    return result;
+}
+
 int main() {
-    // Appel de la fonction pour ajuster le degre du polynome
-    int new_deg = 4;
-    int t[] = {3, -1, 0, 2};
-    int *nouveau_t = ajuster_degre(t, &new_deg);
-
-    printf("Nouveau degre : %d\n", new_deg);
-    printf("Nouveau tableau :\n");
-    afficher_polynome(nouveau_t, new_deg);
-
-    free(nouveau_t);
-
-    int deg;
-    int *polynome = saisir_polynome(&deg);
-
-    sleep(3);
-	system("cls");
+    int deg1;
+    int *polynome1 = saisir_polynome(&deg1);
+    int deg2;
+    int *polynome2 = saisir_polynome(&deg2);
+    int deg_result;
+    int *result = soustraction_polynome(polynome1, deg1, polynome2, deg2, &deg_result);
 
     // Affichage du polynome pour verification
-    printf("Polynome saisi :\n");
-    afficher_polynome(polynome, deg);
+    printf("Polynome 1 saisi :\n");
+    afficher_polynome(polynome1, deg1);
 
-    free(polynome);
+    free(polynome1);
+
+    sleep(3);
+    system("cls");
+
+    // Affichage du polynome pour verification
+    printf("Polynome 2 saisi :\n");
+    afficher_polynome(polynome2, deg2);
+
+    free(polynome2);
+
+    sleep(3);
+    system("cls");
+
+    printf("Resultat de la soustraction :\n");
+    afficher_polynome(result, deg_result);
+
+    free(result);
+
     return 0;
 }

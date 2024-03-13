@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int* saisir_polynome(int *deg) {
     int n; // degre du polynome
@@ -30,7 +31,7 @@ int* ajuster_degre(int *poly, int *deg) {
     int *nouveau_poly = malloc((nouveau_degre + 1) * sizeof(int));
 
     // copier les coefficients du polynome ajuste
-    for (int i = 0; i < nouveau_degre; ++i) {
+    for (int i = 0; i <= nouveau_degre; ++i) {
         nouveau_poly[i] = poly[i];
     }
 
@@ -40,30 +41,50 @@ int* ajuster_degre(int *poly, int *deg) {
     return nouveau_poly;
 }
 
+// Fonction pour afficher le polynôme
+void afficher_polynome(int *poly, int deg) {
+    printf("f(x) = ");
+    for (int i = deg; i >= 0; --i) {
+        if (poly[i] != 0) {
+            if (i == deg)
+                printf("%dx^%d", poly[i], i);
+            else {
+                if (poly[i] > 0)
+                    printf(" + ");
+                else
+                    printf(" - ");
+                if (abs(poly[i]) != 1)
+                    printf("%dx^%d", abs(poly[i]), i);
+                else
+                    printf("x^%d", i);
+            }
+        }
+    }
+    printf("\n");
+}
+
 int main() {
     int deg;
     int *polynome = saisir_polynome(&deg);
 
     // Affichage du polynome pour verification
     printf("Polynome saisi :\n");
-    for (int i = 0; i <= deg; ++i) {
-        printf("a%d = %d\n", i, polynome[i]);
-    }
+    afficher_polynome(polynome, deg);
 
     free(polynome);
 
     // Appel de la fonction pour ajuster le degre du polynome
     int new_deg = 4;
-    int t[] = {3, -1, 0, 0};
+    int t[] = {3, -1, 0, 2};
     int *nouveau_t = ajuster_degre(t, &new_deg);
+
+    //sleep(2);
+	//system("cls");
 
     printf("Nouveau degre : %d\n", new_deg);
     printf("Nouveau tableau :\n");
-    for (int i = 0; i < new_deg; ++i) {
-        printf("a%d = %d\n", i, nouveau_t[i]);
-    }
+    afficher_polynome(nouveau_t, new_deg);
 
     free(nouveau_t);
-
     return 0;
 }

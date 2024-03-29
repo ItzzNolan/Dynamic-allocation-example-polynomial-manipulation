@@ -19,50 +19,6 @@ int* saisir_polynome(int *deg) {
     return poly;
 }
 
-int* ajuster_degre(int *poly, int *deg) {
-    int nouveau_degre = *deg;
-
-    // trouver le nouveau degre effectif
-    while (nouveau_degre >= 0 && poly[nouveau_degre] == 0) {
-        nouveau_degre--;
-    }
-
-    // allouer un tableau de la bonne taille
-    int *nouveau_poly = malloc((nouveau_degre + 1) * sizeof(int));
-
-    // copier les coefficients du polynome ajuste
-    for (int i = 0; i <= nouveau_degre; ++i) {
-        nouveau_poly[i] = poly[i];
-    }
-
-    // mise à jour degre du polynome
-    *deg = nouveau_degre;
-
-    return nouveau_poly;
-}
-
-// Fonction pour afficher le polynôme
-void afficher_polynome(int *poly, int deg) {
-    printf("f(x) = ");
-    for (int i = deg; i >= 0; --i) {
-        if (poly[i] != 0) {
-            if (i == deg)
-                printf("%dx^%d", poly[i], i);
-            else {
-                if (poly[i] > 0)
-                    printf(" + ");
-                else
-                    printf(" - ");
-                if (abs(poly[i]) != 1)
-                    printf("%dx^%d", abs(poly[i]), i);
-                else
-                    printf("x^%d", i);
-            }
-        }
-    }
-    printf("\n");
-}
-
 int* soustraction_polynome(int *poly1, int deg1, int *poly2, int deg2, int *deg_result) {
     // trouver le degre du result
     *deg_result = (deg1 > deg2) ? deg1 : deg2;
@@ -95,6 +51,36 @@ int* multiplication_polynome(int *poly1, int deg1, int *poly2, int deg2, int *de
     return result;
 }
 
+int valeur_polynome(int* poly, int degre, int x) {
+    int val = 0;
+    for (int i = degre; i >= 0; i--) {
+        val = val * x + poly[i];
+    }
+    return val;
+}
+
+// Fonction pour afficher le polynôme
+void afficher_polynome(int *poly, int deg) {
+    printf("f(x) = ");
+    for (int i = deg; i >= 0; --i) {
+        if (poly[i] != 0) {
+            if (i == deg)
+                printf("%dx^%d", poly[i], i);
+            else {
+                if (poly[i] > 0)
+                    printf(" + ");
+                else
+                    printf(" - ");
+                if (abs(poly[i]) != 1)
+                    printf("%dx^%d", abs(poly[i]), i);
+                else
+                    printf("x^%d", i);
+            }
+        }
+    }
+    printf("\n");
+}
+
 int main() {
     int deg1;
     int *polynome1 = saisir_polynome(&deg1);
@@ -104,11 +90,17 @@ int main() {
     int deg_result2;
     int *result = soustraction_polynome(polynome1, deg1, polynome2, deg2, &deg_result);
     int *result2 = multiplication_polynome(polynome1, deg1, polynome2, deg2, &deg_result2);
+    int val = 1;
 
 
     // Affichage du polynome pour verification
     printf("Polynome 1 saisi :\n");
     afficher_polynome(polynome1, deg1);
+    
+    sleep(3);
+    system("cls");
+
+    printf("P1(%i) = %i\n", val, valeur_polynome(polynome1, deg1, val));
 
     free(polynome1);
 
@@ -127,11 +119,10 @@ int main() {
     printf("Resultat de la soustraction :\n");
     afficher_polynome(result, deg_result);
 
-    free(result);
-
     printf("\n\nResultat de la multiplication :\n");
     afficher_polynome(result2, deg_result2);
 
+    free(result);
     free(result2);
 
     return 0;
